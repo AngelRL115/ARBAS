@@ -26,3 +26,27 @@ export const getUserStory = async (req: Request, res: Response) => {
         })
     }
 }
+
+export const createUserStory = async (req: Request, res: Response) => {
+    const userStoryData = req.body
+    try {
+        const response = await axios.post(`https://itrack.web.att.com/rest/api/2/issue`, userStoryData, {
+            headers: {
+                Authorization: `Bearer ${process.env.TOKEN}`,
+                "Content-Type": "application/json",
+            }
+        })
+
+        res.status(StatusCodes.CREATED).json({
+            message: 'User Story created successfully.',
+            data: response.data
+        })
+        console.log(response.data)
+
+    } catch (error) {
+        console.error('Error creating User Story:', error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message: 'Error creating User Story' + error,
+        })
+    }
+}
