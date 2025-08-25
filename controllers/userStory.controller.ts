@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { StatusCodes } from "http-status-codes"
 import * as dotenv from "dotenv"
 import axios from "axios"
+import { userStoryMapper } from '../service/mapper'
 dotenv.config()
 
 export const getUserStory = async (req: Request, res: Response) => {
@@ -14,10 +15,10 @@ export const getUserStory = async (req: Request, res: Response) => {
             }
         })
 
-        res.status(StatusCodes.OK).json({
-            message: `User Story with ID ${userStoryId} retrieved successfully.`,
-            data: response.data
-        })
+        res.status(StatusCodes.OK).json(
+            userStoryMapper(response.data)
+            //response.data
+        )
 
     } catch (error) {
         console.error('Error fetching User Story:', error);
